@@ -65,3 +65,24 @@ def fetch_pr_diff(repo_full_name: str, pr_number: int, config: dict) -> str:
         raise RuntimeError(f"Failed to fetch PR diff: {response.status_code} - {response.text}")
 
     return response.text
+
+def post_review_comment(repo: str, pr_number: int, review_body: str, config: dict) -> None:
+    """
+    Posts a new comment to the pull request with a unique fingerprint tag.
+
+    Returns:
+        None
+    """
+    headers = {
+        "Authorization": f"Bearer {config['github_token']}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+
+    tag = _generate_comment_tag(review_body)
+    full_body = f"{review_body}\n\n{tag}"
+
+    url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
+    resp = requests.post(url, headers=headers, json={"body": full_body})
+
+    if resp.status_code != 201:
+        raise RuntimeError(f"Failed to post PR comment: {resp.status_code} - {resp.text}")
