@@ -7,7 +7,7 @@ def main(pr_number: int, repo_full_name: str):
     """
     End-to-end driver for reviewing a GitHub PR using AI.
     """
-    print(f"📥 Starting review for PR #{pr_number} in repo: {repo_full_name}")
+    print(f"Starting review for PR #{pr_number} in repo: {repo_full_name}")
     
     config = load_config()
 
