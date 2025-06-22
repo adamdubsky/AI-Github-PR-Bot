@@ -38,7 +38,7 @@ def main(pr_number: int, repo_full_name: str):
     print("\n--- AI REVIEW END ---\n")
 
     if check_existing_comment(repo_full_name, pr_number, response, config):
-        print("🛑 Review already exists — skipping duplicate comment.")
+        print("Review already exists — skipping duplicate comment.")
         return
 
     try:
