@@ -83,10 +83,10 @@ pip install -r requirements.txt
 python src/main.py
 ```
 The bot will automatically:
-  Monitor the configured GitHub repository (from the .env file)
-  Check for open pull requests every 3 minutes
-  Detect whether an AI-generated comment already exists
-  Generate a new review and post it if none is found
+- Monitor the configured GitHub repository (from the .env file)
+- Check for open pull requests every 3 minutes
+- Detect whether an AI-generated comment already exists
+- Generate a new review and post it if none is found
 
 
 
