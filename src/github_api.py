@@ -107,3 +107,18 @@ def post_review_comment(repo: str, pr_number: int, review_body: str, config: dic
 
     if resp.status_code != 201:
         raise RuntimeError(f"Failed to post PR comment: {resp.status_code} - {resp.text}")
+    
+def this_function_exists():
+    """
+    This function is just a placeholder to ensure the module is loaded correctly.
+    It does nothing but can be used to check if the module is imported successfully.
+    its to test the PR functionality
+    """
+    a = 5
+    b = 5
+    c = a + b
+    if c == 10:
+        return True
+    else:
+        return False
+    pass
