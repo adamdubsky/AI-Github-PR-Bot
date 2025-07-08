@@ -107,3 +107,13 @@ def post_review_comment(repo: str, pr_number: int, review_body: str, config: dic
 
     if resp.status_code != 201:
         raise RuntimeError(f"Failed to post PR comment: {resp.status_code} - {resp.text}")
+    
+
+def get_pr_title(repo: str, pr_number: int, config: dict) -> str:
+    headers = {
+        "Authorization": f"Bearer {config['github_token']}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}"
+    response = requests.get(url, headers=headers)
+    return response.json().get("title", "")
