@@ -77,80 +77,18 @@ pip install -r requirements.txt
 
 ---
 
-## Running the Bot (Manual Mode)
+## Running the Bot
 
 ```bash
-python src/main.py <PR_NUMBER> <OWNER/REPO>
+python src/main.py
 ```
+The bot will automatically:
+  Monitor the configured GitHub repository (from the .env file)
+  Check for open pull requests every 3 minutes
+  Detect whether an AI-generated comment already exists
+  Generate a new review and post it if none is found
 
-**Example:**
-```bash
-python src/main.py 17 octocat/Hello-World
-```
 
-This fetches the PR diff, generates a review with the selected LLM, and posts a single structured comment on the PR (if no duplicate exists).
-
----
-
-## GitHub Action Integration (Optional)
-
-To automate reviews on PR creation or updates, add the following workflow:
-
-```yaml
-# .github/workflows/pr-review.yml
-name: AI PR Review
-
-on:
-  pull_request:
-    types: [opened, synchronize]
-
-jobs:
-  review:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.11
-
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-
-    - name: Run PR Reviewer
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        LLM_BACKEND: openai
-      run: |
-        python src/main.py ${{ github.event.number }} ${{ github.repository }}
-```
-
-Set your secrets under **Repository → Settings → Secrets → Actions**.
-
----
-
-## LLM Prompt Format
-
-The bot uses a consistent, interpretable format:
-
-````markdown
-### Summary
-...
-
-### Issues Detected
-- (file:line): ...
-
-### Suggestions for Improvement
-- (file:line): ...
-
-### Best Practices Check
-...
-````
 
 ---
 
