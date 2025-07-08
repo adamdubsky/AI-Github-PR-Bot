@@ -15,7 +15,6 @@ def load_config():
         "openai_api_key": os.getenv("OPENAI_API_KEY"),
         "llama_model_path": os.getenv("LLAMA_MODEL_PATH"),
         "github_token": os.getenv("GITHUB_TOKEN"),
-        "github_webhook_secret": os.getenv("GITHUB_WEBHOOK_SECRET"),
     }
 
     # Optional: validate required values

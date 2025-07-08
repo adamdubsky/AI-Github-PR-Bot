@@ -1,10 +1,10 @@
-# 🧠 AI GitHub Pull Request Reviewer Bot
+# AI GitHub Pull Request Reviewer Bot
 
 A production-ready AI-powered tool for automated code review. This bot integrates with GitHub pull requests to provide intelligent, structured feedback using either OpenAI GPT-4 or local LLaMA models.
 
 ---
 
-## 📌 Overview
+## Overview
 
 The AI PR Reviewer Bot automatically reviews pull requests by:
 - Summarizing the proposed code changes
@@ -16,18 +16,18 @@ The review is posted as a well-formatted Markdown comment directly on the pull r
 
 ---
 
-## 🚀 Features
+## Features
 
-- ✅ Automated PR review on open/update events
-- ✅ Markdown-formatted summaries and suggestions
-- ✅ Supports OpenAI GPT-4 and local `.gguf` models via `llama-cpp-python`
-- ✅ Smart deduplication to prevent repeat comments
-- ✅ Configurable, modular, and testable architecture
-- ✅ CLI support and GitHub Actions integration
+- Automated PR review on open/update events
+- Markdown-formatted summaries and suggestions
+- Supports OpenAI GPT-4 and local `.gguf` models via `llama-cpp-python`
+- Smart deduplication to prevent repeat comments
+- Configurable, modular, and testable architecture
+- CLI support and GitHub Actions integration
 
 ---
 
-## 🔐 Requirements
+## Requirements
 
 - Python 3.10+
 - OpenAI API Key **or** local `.gguf` model file
@@ -35,21 +35,32 @@ The review is posted as a well-formatted Markdown comment directly on the pull r
 
 ---
 
-## ⚙️ Configuration
+## Generating a GitHub Personal Access Token
+
+1. Sign in to [github.com](https://github.com) and open **Settings**.
+2. Navigate to **Developer settings → Personal access tokens**.
+3. Choose **Generate new token** (classic or fine-grained).
+4. Set an expiration, give it a descriptive name, and enable the **repo** scope.
+5. Click **Generate token** and copy the value.
+6. Store the token in your `.env` file under `GITHUB_TOKEN` and keep it secret.
+
+---
+
+## Configuration
 
 Create a `.env` file in the project root based on the `.env.example` template:
 
 ```env
 LLM_BACKEND=openai                     # or "llama"
 OPENAI_API_KEY=sk-...                 # Only if using OpenAI
-LLAMA_MODEL_PATH=./models/model.gguf  # Only if using llama
-GITHUB_TOKEN=ghp_...                  # GitHub token for API access
-GITHUB_WEBHOOK_SECRET=placeholder     # Reserved for future webhook support
+LLAMA_MODEL_PATH=./models/llama-2-7b.Q4_K_M.gguf  # Only if using llama
+GITHUB_TOKEN=ghp_your_token_here      # GitHub token for API access
+REPO_URL=https://github.com/yourusername/yourrepo
 ```
 
 ---
 
-## 🛠️ Installation
+## Installation
 
 ```bash
 # Clone the repository
@@ -66,7 +77,7 @@ pip install -r requirements.txt
 
 ---
 
-## 💻 Running the Bot (Manual Mode)
+## Running the Bot (Manual Mode)
 
 ```bash
 python src/main.py <PR_NUMBER> <OWNER/REPO>
@@ -81,7 +92,7 @@ This fetches the PR diff, generates a review with the selected LLM, and posts a 
 
 ---
 
-## ⚙️ GitHub Action Integration (Optional)
+## GitHub Action Integration (Optional)
 
 To automate reviews on PR creation or updates, add the following workflow:
 
@@ -115,7 +126,6 @@ jobs:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         LLM_BACKEND: openai
-        GITHUB_WEBHOOK_SECRET: placeholder
       run: |
         python src/main.py ${{ github.event.number }} ${{ github.repository }}
 ```
@@ -124,33 +134,33 @@ Set your secrets under **Repository → Settings → Secrets → Actions**.
 
 ---
 
-## 🧠 LLM Prompt Format
+## LLM Prompt Format
 
 The bot uses a consistent, interpretable format:
 
 ````markdown
-### 📜 Summary
+### Summary
 ...
 
-### ⚠️ Issues Detected
+### Issues Detected
 - (file:line): ...
 
-### ✅ Suggestions for Improvement
+### Suggestions for Improvement
 - (file:line): ...
 
-### 🧠 Best Practices Check
+### Best Practices Check
 ...
 ````
 
 ---
 
-## 📄 License
+## License
 
 MIT License. See `LICENSE` for details.
 
 ---
 
-## 🧠 Designed For
+## Designed For
 
 - Internal engineering teams at scale
 - AI developer tooling and workflows
