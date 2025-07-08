@@ -6,8 +6,6 @@ from config import load_config
 from github_api import fetch_pr_diff, post_review_comment, check_existing_comment, list_open_pull_requests
 from llm_base import get_llm_response
 
-SEEN_PRS = set()
-
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -60,8 +58,9 @@ def review_pr(pr_number: int, repo_full_name: str, config: dict):
 
     logging.info("LLM responded successfully")
 
-    if check_existing_comment(repo_full_name, pr_number, response, config):
-        logging.info(f"Duplicate review detected for PR #{pr_number} — skipping")
+    # Only post if no comment already exists
+    if check_existing_comment(repo_full_name, pr_number, config):
+        logging.info(f"AI comment already exists on PR #{pr_number} — skipping.")
         return
 
     try:
@@ -82,12 +81,16 @@ def main():
             prs = list_open_pull_requests(repo_full_name, config)
             logging.info(f"Checked {len(prs)} open PR(s)")
             for pr in prs:
-                pr_id = pr["id"]
                 pr_number = pr["number"]
-                if pr_id not in SEEN_PRS:
-                    logging.info(f"New PR detected: #{pr_number} — '{pr['title']}'")
-                    review_pr(pr_number, repo_full_name, config)
-                    SEEN_PRS.add(pr_id)
+                pr_title = pr["title"]
+
+                if check_existing_comment(repo_full_name, pr_number, config):
+                    logging.info(f"Skipping PR #{pr_number} — already reviewed.")
+                    continue
+
+                logging.info(f"Reviewing PR #{pr_number} — '{pr_title}'")
+                review_pr(pr_number, repo_full_name, config)
+
         except Exception as e:
             logging.exception(f"Unexpected error during polling: {e}")
         
