@@ -91,7 +91,7 @@ def main():
         except Exception as e:
             logging.exception(f"Unexpected error during polling: {e}")
         
-        time.sleep(30)
+        time.sleep(180)
 
 if __name__ == "__main__":
     try:
