@@ -1,7 +1,22 @@
 import requests
 import hashlib
+import httpx
 
+def list_open_pull_requests(repo_full_name: str, config: dict) -> list:
+    """
+    Returns a list of open pull requests for the specified repo.
 
+    Each PR dict contains keys like 'id', 'number', 'title', etc.
+    """
+    url = f"https://api.github.com/repos/{repo_full_name}/pulls?state=open"
+    headers = {
+        "Authorization": f"Bearer {config['github_token']}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+
+    response = httpx.get(url, headers=headers)
+    response.raise_for_status()
+    return response.json()
 
 def _generate_comment_tag(content: str) -> str:
     """
