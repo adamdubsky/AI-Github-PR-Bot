@@ -21,6 +21,8 @@ https://github.com/adamdubsky/AI-Github-PR-Bot/pull/3
 <img width="937" alt="image" src="https://github.com/user-attachments/assets/0f10d2c7-d9b9-4d44-bb2b-f0fda7b9abff" />
 
 
+---
+
 ## Features
 
 - Automated PR review on open/update events
